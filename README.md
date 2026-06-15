@@ -234,6 +234,56 @@ soak-summary.json
 regression-summary.json
 ```
 
+## Evidencias del proyecto
+
+### Servicio Spring Boot
+
+![Servicio Spring Boot](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/01_servicio_ejecucion.png)
+
+### Prueba manual del endpoint `/register`
+
+![Prueba manual endpoint register](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/02_curl_endpoint_register.png)
+
+### Ejecución k6 Baseline
+
+![k6 Baseline](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/03_k6_baseline.png)
+
+### Ejecución k6 Load
+
+![k6 Load](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/04_k6_load.png)
+
+### Ejecución k6 Stress
+
+![k6 Stress](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/05_k6_stress.png)
+
+### Ejecución k6 Spike
+
+![k6 Spike](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/06_k6_spike.png)
+
+### Ejecución k6 Soak
+
+![k6 Soak](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/07_k6_soak.png)
+
+### Ejecución k6 Regression
+
+![k6 Regression](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/08_k6_regression.png)
+
+### Resultados generados
+
+![Resultados perf results p99](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/09_resultados_perf_results_p99.png)
+
+### GitHub Actions workflow creado
+
+![GitHub Actions workflow creado](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/10_github_actions_workflow_created.png)
+
+### GitHub Actions ejecución por push
+
+![GitHub Actions ejecución por push](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/11_github_actions_push_execution.png)
+
+### Plan de pruebas JMeter
+
+![Plan de pruebas JMeter](https://raw.githubusercontent.com/milo1409/TYVS-Proyecto_Pruebas_carga_y_rendimiento/master/evidencias/12_jmeter_test_plan.png)
+
 ## 12. Métricas analizadas
 
 En cada escenario se revisan las siguientes métricas:
