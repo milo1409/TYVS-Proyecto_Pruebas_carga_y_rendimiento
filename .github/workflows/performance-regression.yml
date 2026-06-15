@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
@@ -31,7 +28,7 @@ jobs:
         working-directory: registraduria
         run: |
           nohup mvn spring-boot:run -Dmaven.test.skip=true > app.log 2>&1 &
-          sleep 20
+          sleep 25
 
       - name: Verify application is running
         run: |
