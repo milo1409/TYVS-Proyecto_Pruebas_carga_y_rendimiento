@@ -129,14 +129,18 @@ function buildOptions() {
     console.warn(`SCENARIO='${SCENARIO}' no reconocido. Usando 'baseline'.`);
   }
   return {
+    summaryTrendStats: ['avg', 'min', 'med', 'max', 'p(90)', 'p(95)', 'p(99)'],
+
     thresholds: {
-      http_req_failed: ['rate<0.01'],             // <1% de fallos HTTP globales
-      'http_req_duration{status:200}': ['p(95)<300', 'p(99)<800'], // SLO sugeridos
-      register_failed: ['rate<0.01'],             // <1% de fallos de validación
+      http_req_failed: ['rate<0.01'],
+      'http_req_duration{status:200}': ['p(95)<300', 'p(99)<800'],
+      register_failed: ['rate<0.01'],
     },
+
     scenarios: {
       run: chosen || ALL_SCENARIOS['baseline'],
     },
+
     discardResponseBodies: false,
     noConnectionReuse: false,
   };
