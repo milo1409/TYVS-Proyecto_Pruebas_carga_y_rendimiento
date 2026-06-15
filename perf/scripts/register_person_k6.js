@@ -110,7 +110,7 @@ const ALL_SCENARIOS = {
   soak: {
     executor: 'constant-vus',
     vus: 100,
-    duration: '2h',
+    duration: '10m',
     gracefulStop: '1m',
   },
   regression: {

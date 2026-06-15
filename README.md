@@ -1,223 +1,281 @@
-# Proyecto Final – Pruebas de Carga y Rendimiento
+# Proyecto Final – Pruebas de Carga y Rendimiento con k6
 
-Este proyecto final tiene como propósito diseñar, ejecutar y analizar pruebas de rendimiento sobre un servicio REST desarrollado durante el curso.  
-El equipo deberá aplicar técnicas de pruebas de carga utilizando k6, definir objetivos de nivel de servicio (SLO), interpretar métricas de rendimiento y documentar defectos relacionados con desempeño.
+## 1. Descripción del proyecto
 
-El enfoque no es únicamente ejecutar pruebas, sino analizar técnicamente el comportamiento del sistema bajo distintas condiciones de carga y proponer mejoras fundamentadas.
+Este repositorio contiene la entrega final correspondiente a la fase de pruebas de carga y rendimiento del proyecto integrador del curso.
 
----
+El objetivo principal es diseñar, ejecutar y analizar pruebas de rendimiento sobre un servicio REST desarrollado en Spring Boot, utilizando la herramienta k6. El análisis se enfoca en evaluar el comportamiento del sistema bajo diferentes condiciones de carga, validar objetivos de nivel de servicio —SLO—, identificar posibles cuellos de botella y documentar defectos relacionados con desempeño.
 
-## 2. Objetivos Académicos
+El servicio evaluado corresponde al endpoint:
 
-- Diseñar escenarios de pruebas de rendimiento progresivos y justificarlos técnicamente.
-- Ejecutar pruebas de carga, estrés, pico, resistencia y regresión.
-- Definir SLO medibles y evaluar su cumplimiento.
-- Analizar métricas como latencia promedio, p95, p99, throughput y tasa de errores.
-- Identificar cuellos de botella.
-- Documentar defectos de rendimiento.
-- Integrar pruebas de rendimiento dentro de un flujo reproducible (opcional CI/CD).
-
----
-
-## 3. Alcance Técnico
-
-El equipo podrá elegir uno de los siguientes enfoques:
-
-1. Realizar pruebas sobre un endpoint real de un aplicativo en ambiente controlado.
-2. Implementar el endpoint `/voter/register`.
-3. Aplicar pruebas sobre un microservicio desarrollado previamente en el curso.
-
-El sistema debe ejecutarse localmente o mediante contenedor Docker.
-
----
-
-## 4. Tipos de Pruebas Obligatorias
-
-El proyecto debe incluir como mínimo:
-
-- Baseline Test
-- Load Test
-- Stress Test
-- Spike Test
-- Soak Test
-- Regresión de rendimiento
-
-Cada escenario debe estar correctamente configurado y documentado.
-
----
-
-## 5. Estructura Sugerida del Repositorio
-
-```
-perf-project/
- ├─ src/
- ├─ perf/
- │   ├─ scripts/
- │   │   ├─ register_person_k6.js
- │   │   └─ voter_k6.js
- │   ├─ data/
- │   ├─ results/
- │   ├─ defectos_rendimiento.md
- │   └─ ci/
- │       └─ github-actions.yml
- ├─ README.md
- └─ integrantes.txt
+```http
+POST /register
 ```
 
----
+Este endpoint permite registrar una persona en el sistema de registraduría.
 
-## 6. Ejecución Reproducible
+## 2. Objetivos del proyecto
 
-El proyecto debe ejecutarse completamente desde consola.
+* Diseñar escenarios progresivos de pruebas de rendimiento.
+* Ejecutar pruebas Baseline, Load, Stress, Spike, Soak y Regresión.
+* Definir y validar objetivos de nivel de servicio —SLO—.
+* Analizar métricas como latencia promedio, p95, p99, throughput y tasa de errores.
+* Identificar posibles cuellos de botella.
+* Documentar defectos de rendimiento.
+* Garantizar que las pruebas sean reproducibles desde consola.
 
-Ejecución del servicio (ejemplo, esto puede cambiar dependiendo del proyecto):
+## 3. Herramientas utilizadas
 
+* Java 17.
+* Spring Boot 2.7.18.
+* Maven.
+* k6.
+* Git.
+* GitHub.
+* GitHub Wiki.
+* PowerShell.
+
+## 4. Estructura del repositorio
+
+```text
+TYVS-Proyecto_Pruebas_carga_y_rendimiento/
+│
+├── README.md
+├── integrantes.txt
+│
+├── registraduria/
+│   ├── pom.xml
+│   └── src/
+│
+├── perf/
+│   ├── scripts/
+│   │   ├── register_person_k6.js
+│   │   └── register_voter_k6.js
+│   │
+│   ├── data/
+│   │   ├── persons.csv
+│   │   └── voters.csv
+│   │
+│   ├── results/
+│   │   ├── baseline-summary.json
+│   │   ├── load-summary.json
+│   │   ├── stress-summary.json
+│   │   ├── spike-summary.json
+│   │   ├── soak-summary.json
+│   │   └── regression-summary.json
+│   │
+│   ├── defectos_rendimiento.md
+│   │
+│   └── ci/
+│       └── github-actions.yml
+│
+└── evidencias/
+    ├── 01_servicio_ejecucion.png
+    ├── 02_curl_endpoint_register.png
+    ├── 03_k6_baseline.png
+    ├── 04_k6_load.png
+    ├── 05_k6_stress.png
+    ├── 06_k6_spike.png
+    ├── 07_k6_soak.png
+    ├── 08_k6_regression.png
+    └── 09_resultados_perf_results.png
 ```
-mvn clean spring-boot:run
+
+## 5. Servicio evaluado
+
+El servicio se ejecuta localmente en:
+
+```text
+http://localhost:8080
 ```
 
-Ejecución de pruebas:
+Endpoint evaluado:
 
+```http
+POST /register
 ```
-k6 run perf/scripts/register_person_k6.js --env SCENARIO=load
+
+Ejemplo de petición:
+
+```json
+{
+  "name": "Ana",
+  "id": 100,
+  "age": 30,
+  "gender": "FEMALE",
+  "alive": true
+}
 ```
 
-Los resultados deben almacenarse automáticamente en `/perf/results`.
+Respuesta esperada:
 
----
+```text
+VALID
+```
 
-## 7. Definición de SLO
+## 6. Ejecución del servicio
 
-El equipo debe definir al menos dos SLO claros y medibles.
+Desde la carpeta `registraduria`:
 
-Ejemplos:
+```powershell
+cd registraduria
+mvn spring-boot:run -Dmaven.test.skip=true
+```
 
-- p95 < 300 ms
-- Error rate < 1 %
-- Disponibilidad ≥ 99 %
+El servicio queda disponible cuando la consola muestra:
 
-Los SLO deben justificarse técnicamente en función del tipo de sistema evaluado.
+```text
+Tomcat started on port(s): 8080
+Started RegistryApplication
+```
 
----
+## 7. Prueba manual del endpoint
 
-## 8. Métricas Obligatorias
+Desde otra terminal:
 
-En cada escenario se debe reportar:
+```powershell
+$body = @{
+  name = "Ana"
+  id = 100
+  age = 30
+  gender = "FEMALE"
+  alive = $true
+} | ConvertTo-Json
 
-- Latencia promedio
-- p95
-- p99
-- Throughput (req/s)
-- Tasa de errores
+Invoke-RestMethod `
+  -Uri "http://localhost:8080/register" `
+  -Method POST `
+  -ContentType "application/json" `
+  -Body $body
+```
 
-Debe incluirse análisis comparativo entre escenarios.
+Resultado esperado:
 
----
+```text
+VALID
+```
 
-## 9. Registro de Defectos de Rendimiento
+## 8. Escenarios de rendimiento implementados
 
-Se debe crear el archivo `perf/defectos_rendimiento.md` basado en el template institucional.
+| Escenario       | Objetivo                                            | Tipo de carga                |
+| --------------- | --------------------------------------------------- | ---------------------------- |
+| Baseline Test   | Medir el comportamiento base del servicio           | Carga mínima                 |
+| Load Test       | Evaluar el sistema bajo carga esperada              | Carga progresiva normal      |
+| Stress Test     | Identificar degradación bajo alta concurrencia      | Carga superior a la esperada |
+| Spike Test      | Evaluar respuesta ante aumento brusco de usuarios   | Pico repentino               |
+| Soak Test       | Validar estabilidad durante carga sostenida         | Carga prolongada             |
+| Regression Test | Comparar comportamiento en una ejecución controlada | Carga estable repetible      |
 
-Cada defecto debe incluir:
+## 9. SLO definidos
 
-- Identificador
-- Escenario donde ocurre
-- Evidencia (métrica o log)
-- Impacto
-- Propuesta de mejora
+| SLO                               | Valor esperado | Métrica k6                |
+| --------------------------------- | -------------: | ------------------------- |
+| Latencia p95                      |       < 300 ms | `http_req_duration p(95)` |
+| Latencia p99                      |       < 800 ms | `http_req_duration p(99)` |
+| Tasa de errores HTTP              |          < 1 % | `http_req_failed`         |
+| Validaciones funcionales fallidas |          < 1 % | `register_failed`         |
 
-Se requieren mínimo tres defectos documentados.
+## 10. Ejecución de pruebas k6
 
----
+Desde la raíz del repositorio:
 
-## 10. Wiki del Proyecto (Documento Oficial)
+### Baseline Test
 
-La evaluación se realizará principalmente sobre la Wiki del repositorio.
+```powershell
+k6 run perf/scripts/register_person_k6.js --env BASE_URL=http://localhost:8080 --env SCENARIO=baseline --env RUN_ID=20 --summary-export=perf/results/baseline-summary.json
+```
 
-Estructura sugerida:
+### Load Test
 
-1. Introducción y arquitectura del sistema.
-2. Definición de SLO.
-3. Configuración de escenarios.
-4. Resultados detallados.
-5. Comparación entre escenarios.
-6. Identificación de cuellos de botella.
-7. Registro de defectos.
-8. Propuestas de mejora.
-9. Reflexión técnica.
+```powershell
+k6 run perf/scripts/register_person_k6.js --env BASE_URL=http://localhost:8080 --env SCENARIO=load --env RUN_ID=21 --summary-export=perf/results/load-summary.json
+```
 
----
+### Stress Test
 
-## 11. Diferenciación con Otros Proyectos del Curso
+```powershell
+k6 run perf/scripts/register_person_k6.js --env BASE_URL=http://localhost:8080 --env SCENARIO=stress --env RUN_ID=22 --summary-export=perf/results/stress-summary.json
+```
 
-| Proyecto | Enfoque |
-|----------|---------|
-| Unitarias | Validación de lógica interna |
-| Integración | Validación de colaboración entre capas |
-| Rendimiento | Validación del comportamiento bajo carga y condiciones extremas |
+### Spike Test
 
-Este proyecto introduce la dimensión temporal y de resiliencia del sistema.
+```powershell
+k6 run perf/scripts/register_person_k6.js --env BASE_URL=http://localhost:8080 --env SCENARIO=spike --env RUN_ID=23 --summary-export=perf/results/spike-summary.json
+```
 
----
+### Soak Test
 
-## 12. Rúbrica de Evaluación (50 puntos)
+```powershell
+k6 run perf/scripts/register_person_k6.js --env BASE_URL=http://localhost:8080 --env SCENARIO=soak --env RUN_ID=24 --summary-export=perf/results/soak-summary.json
+```
 
-## Rúbrica de evaluación
+### Regression Test
 
-| **Criterios de evaluación** | **Indicadores de cumplimiento** | **Excelente (5 pts)** | **Bueno (4 pts)** | **Necesita mejorar (3.5 pts)** | **Deficiente (2.5 pts)** | **No cumple (0 pts)** |
-|------------------------------|---------------------------------|------------------------|--------------------|---------------------------------|---------------------------|------------------------|
-| **Diseño de escenarios de rendimiento** | Baseline, Load, Stress, Spike, Soak y Regresión correctamente configurados. | Escenarios progresivos, técnicamente justificados y reproducibles. | Escenarios completos con leves inconsistencias. | Faltan uno o dos escenarios o sin justificación técnica. | Configuración incorrecta o sin progresión lógica. | No implementa escenarios requeridos. |
-| **Implementación técnica de scripts k6** | Uso correcto de VUs, stages, thresholds y dataset. | Scripts parametrizados, organizados y totalmente funcionales. | Scripts funcionales con leves errores de estructura. | Funcionan parcialmente o con hardcode excesivo. | Presentan errores de ejecución. | No entrega scripts funcionales. |
-| **Definición y validación de SLO** | Objetivos claros y medibles (latencia, error rate, etc.). | SLO bien definidos, medidos y analizados en todos los escenarios. | SLO definidos pero análisis parcial. | SLO poco claros o sin validación consistente. | SLO mal definidos o sin evidencia. | No define SLO. |
-| **Análisis de métricas de rendimiento** | Interpretación de p95, p99, throughput y error rate. | Análisis comparativo profundo entre escenarios y versiones. | Análisis correcto pero superficial. | Reporta métricas sin interpretación sólida. | Solo copia resultados sin análisis. | No presenta análisis. |
-| **Gestión de defectos de rendimiento** | Registro estructurado y seguimiento. | Documento completo con evidencia, impacto y propuesta de mejora. | Registro con evidencia parcial. | Lista defectos sin análisis profundo. | Registro mínimo o incompleto. | No presenta defectos. |
-| **Observabilidad y diagnóstico técnico** | Identificación de cuellos de botella y causas probables. | Correlaciona métricas de aplicación con infraestructura (CPU, memoria, threads). | Identifica causas probables sin evidencia técnica suficiente. | Menciona problemas sin diagnóstico claro. | Análisis superficial. | No identifica causas. |
-| **Reproducibilidad del proyecto** | Ejecución desde consola sin intervención manual. | Proyecto ejecuta correctamente con documentación clara. | Requiere pequeños ajustes manuales. | Ejecución parcial o poco clara. | Difícil de ejecutar. | No ejecuta. |
-| **Documentación en Wiki** | Claridad, estructura y evidencias técnicas. | Wiki completa, organizada y con análisis detallado. | Bien estructurada con faltantes menores. | Parcial o poco clara. | Incompleta o sin evidencias técnicas. | No hay Wiki. |
-| **Reflexión técnica y conclusiones** | Aprendizajes y mejoras propuestas. | Reflexión crítica con propuestas técnicas fundamentadas. | Reflexión adecuada pero general. | Reflexión superficial. | Reflexión mínima. | No presenta reflexión. |
-| **Calidad general del proyecto** | Coherencia técnica y presentación. | Integración sólida entre pruebas, análisis y documentación. | Buen nivel general con leves inconsistencias. | Parcialmente funcional. | Fallos técnicos importantes. | Proyecto incompleto o no funcional. |
+```powershell
+k6 run perf/scripts/register_person_k6.js --env BASE_URL=http://localhost:8080 --env SCENARIO=regression --env RUN_ID=25 --summary-export=perf/results/regression-summary.json
+```
 
-| **Rango de puntaje** | **Desempeño** |
-|----------------------|----------------|
-| 45 – 50 | Excelente manejo de pruebas de rendimiento y análisis técnico avanzado. |
-| 35 – 44 | Buen trabajo, ejecución completa con fallas menores en análisis o documentación. |
-| 30 – 34 | Cumple con lo básico, faltan evidencias o profundidad técnica. |
-| < 30 | No cumple con los criterios mínimos del proyecto. |
+## 11. Resultados
 
----
+Los resultados de las ejecuciones se almacenan en:
 
-## 13. Referencias
+```text
+perf/results/
+```
 
-- Grafana k6 Documentation  
-- Google SRE Book – Service Level Objectives  
-- ISO/IEC 25010 – Performance Efficiency  
+Archivos esperados:
 
----
+```text
+baseline-summary.json
+load-summary.json
+stress-summary.json
+spike-summary.json
+soak-summary.json
+regression-summary.json
+```
 
-## Créditos y uso académico
+## 12. Métricas analizadas
 
-**Autor:** César Augusto Vega Fernández
-**Curso:** Testing y Validación de Software
-**Programa:** Maestría en Ingeniería de Software – Universidad de La Sabana
-**Año:** 2025
+En cada escenario se revisan las siguientes métricas:
 
-Este taller y su contenido fueron diseñados por el profesor **César Augusto Vega Fernández** como material académico para el curso *Testing y Validación de Software*, impartido en la **Maestría en Ingeniería de Software de la Universidad de La Sabana**.
+* Latencia promedio.
+* Percentil 95 —p95—.
+* Percentil 99 —p99—.
+* Throughput.
+* Tasa de errores HTTP.
+* Validaciones funcionales exitosas y fallidas.
 
-Material de uso **exclusivamente académico**, orientado a fortalecer las competencias en **pruebas de carga y rendimiento, con un componente de control de defectos** dentro del ciclo DevSecOps.
+## 13. Registro de defectos
 
----
+Los defectos de rendimiento se documentan en:
 
-### Licencia de uso
+```text
+perf/defectos_rendimiento.md
+```
 
-Este material se distribuye bajo la licencia [Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es).
+Cada defecto incluye:
 
-Puedes **usar, adaptar o compartir** este contenido con fines educativos, siempre que:
+* Identificador.
+* Escenario donde ocurre.
+* Evidencia.
+* Impacto.
+* Causa probable.
+* Propuesta de mejora.
 
-1. Se reconozca la autoría del profesor **César Augusto Vega Fernández**.
-2. No se utilice con fines comerciales.
-3. Las obras derivadas se distribuyan bajo la misma licencia.
+## 14. Wiki del proyecto
 
----
+La documentación oficial del proyecto se encuentra en la Wiki del repositorio. La Wiki contiene:
 
-© Universidad de La Sabana – Facultad de Ingeniería
-Maestría en Ingeniería de Software – 2025
+* Introducción y arquitectura del sistema.
+* Definición de SLO.
+* Configuración de escenarios.
+* Resultados detallados.
+* Comparación entre escenarios.
+* Identificación de cuellos de botella.
+* Registro de defectos.
+* Propuestas de mejora.
+* Reflexión técnica.
+
+## 15. Conclusión
+
+Las pruebas de carga y rendimiento permiten evaluar la dimensión temporal del sistema. A través de k6 se validó el comportamiento del endpoint `/register` bajo diferentes condiciones de carga, identificando métricas clave, riesgos de desempeño, defectos asociados a datos de prueba y oportunidades de mejora técnica.
