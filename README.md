@@ -279,3 +279,10 @@ La documentación oficial del proyecto se encuentra en la Wiki del repositorio. 
 ## 15. Conclusión
 
 Las pruebas de carga y rendimiento permiten evaluar la dimensión temporal del sistema. A través de k6 se validó el comportamiento del endpoint `/register` bajo diferentes condiciones de carga, identificando métricas clave, riesgos de desempeño, defectos asociados a datos de prueba y oportunidades de mejora técnica.
+
+## 16. Ejecución adicional con JMeter
+
+Como evidencia complementaria, se incluyó un plan de pruebas en Apache JMeter ubicado en:
+
+```text
+perf/jmeter/register_performance_jmeter.jmx
